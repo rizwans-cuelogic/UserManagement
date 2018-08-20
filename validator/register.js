@@ -5,18 +5,22 @@ const isEmpty =require('./is-Empty.js');
 
 module.exports=function validateRegisterInput(data){
   console.log("Dat....",data);
+  console.log(typeof(data.password));
+  
   let errors = {};
-  data.username = (data.userName)? data.username : '';
+
+  data.userName = (data.userName)? data.userName : '';
   data.password = (data.password) ? data.password : '';
-  data.firstname =(data.firstName) ? data.firstname : '';
-  data.lastname =(data.lastName) ? data.lastname : '';
+  data.confirmPassword = (data.confirmPassword) ? data.confirmPassword : '';
+  data.firstName =(data.firstName) ? data.firstName : '';
+  data.lastName =(data.lastName) ? data.lastName : '';
 
 
-  if(validator.isEmpty(data.username)){
-    errors.name = "name is required.";
+  if(validator.isEmpty(data.userName)){
+    errors.userName = "name is required.";
   }
-  if(!validator.isLength(data.username,{min:4,max:12})){
-    errors.name="name should be 4 to 30 chars long";
+  if(!validator.isLength(data.userName,{min:4,max:12})){
+    errors.userName="name should be 4 to 30 chars long";
   }
   if(validator.isEmpty(data.password)){
     errors.password = "Password is required";

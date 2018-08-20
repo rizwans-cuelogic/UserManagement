@@ -10,10 +10,10 @@ exports.register= function (req, res){
     if(!isValid){
       res.status(404).json({errors});
     }
-      User.findOne({userName:req.body.username})
+      User.findOne({userName:req.body.userName})
       .then(user=>{ 
         if(user){
-          res.status(400).json({username:"userName Already Existed"});
+          res.status(400).json({userName:"userName Already Existed"});
         }
         else{ 
             const newUser = new User({
@@ -41,9 +41,9 @@ exports.login =  function (req,res){
     res.status(404).json({ errors });
   }
 
-  userName = req.body.username;
+  userName = req.body.userName;
   password= req.body.password;
-  User.findOne({username})
+  User.findOne({userName})
     .then(user =>{
       if(!user){
          res.status(404).json("User Not Found");
