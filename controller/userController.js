@@ -1,20 +1,19 @@
-const User = require('../models/User');
+const User = require('../model/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const keys = require('../config/keys');
 
-const validateRegisterInput= require('../validators/register');
-const validateLoginInput = require('../validators/login');
+const validateRegisterInput= require('../validator/register');
+const validateLoginInput = require('../validator/login');
 exports.register= function (req, res){
 
   const { errors, isValid } = validateRegisterInput(req.body);
     if(!isValid){
       res.status(404).json({errors});
     }
-      User.findOne({email:req.body.username})
+      User.findOne({userName:req.body.username})
       .then(user=>{ 
         if(user){
-          res.status(400).json({email:"userName Already Existed"});
+          res.status(400).json({username:"userName Already Existed"});
         }
         else{ 
             const newUser = new User({
@@ -42,9 +41,9 @@ exports.login =  function (req,res){
     res.status(404).json({ errors });
   }
 
-  userName = req.body.email;
+  userName = req.body.username;
   password= req.body.password;
-  User.findOne({email})
+  User.findOne({username})
     .then(user =>{
       if(!user){
          res.status(404).json("User Not Found");
@@ -58,7 +57,7 @@ exports.login =  function (req,res){
               userName:user.userName,
               }
             
-            jwt.sign(payload,keys.secretorkey,
+            jwt.sign(payload,process.env.secretorkey,
               {expiresIn:3600},
               (err,token)=>{
               res.json({

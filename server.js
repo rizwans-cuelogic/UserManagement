@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 // mogo db connection
 const db = process.env.mongoURI;
 mongoose
-  .connect(db)
+  .connect(db, { useNewUrlParser: true } )
   .then(()=>console.log("DB connected"))
   .catch((err)=>console.log(`Error:${err}`));
 
