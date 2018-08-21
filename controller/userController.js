@@ -1,16 +1,20 @@
 const User = require('../model/User');
+const UserActivity = require('../model/UserActivity');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const moment = require('moment');
 
 const validateRegisterInput= require('../validator/register');
 const validateLoginInput = require('../validator/login');
+const validateUpdateUserInput = require('../validator/userUpdate')
+
 exports.register= function (req, res){
 
   const { errors, isValid } = validateRegisterInput(req.body);
     if(!isValid){
       res.status(404).json({errors});
     }
-      User.findOne({userName:req.body.userName})
+    User.findOne({userName:req.body.userName})
       .then(user=>{ 
         if(user){
           res.status(400).json({userName:"userName Already Existed"});
@@ -56,10 +60,24 @@ exports.login =  function (req,res){
               id:user.id,
               userName:user.userName,
               }
+            let user_agent = req.header.user_agent;
+            let host = req.headers.host;
             
+            const useractivity = new UserActivity(
+              {
+                user : user.id,
+                ip : host,
+                uaString : user_agent
+              }
+            )
+            useractivity.save().then(useractivity =>{
+              console.log("logged user activity");
+            })
+
             jwt.sign(payload,process.env.secretorkey,
               {expiresIn:3600},
               (err,token)=>{
+            
               res.json({
                 success:true,
                 token : 'Bearer '+token
@@ -80,3 +98,65 @@ exports.login =  function (req,res){
     });
 };
 
+exports.all_users = function(req,res){
+   User.find().then(users => {
+      res.json(users);
+   })
+  .catch(err => console.log(err)); 
+}
+exports.get_user = function(req,res){
+  let userId = req.params.userId;
+  User.findOne({_id:userId})
+  .then(user =>{ 
+      if(!user){
+        res.status(404).json("User Not found.....");
+      }
+      else{
+        res.json(user);
+      }
+  })
+  .catch(err =>{
+    console.log(err);
+  }) 
+}
+exports.update_user = function(req,res){
+  const { errors, isValid } = validateUpdateUserInput(req.body);
+  if(!isValid){
+    res.status(404).json({errors});
+  }
+
+  const userFields = {}
+  userFields.firstName = req.body.firstName,
+  userFields.lastName = req.body.lastName, 
+  userFields.date = Date.now();
+
+  User.findOne({_id:req.params.userId}).then(user =>{
+    if(user)
+    {
+      User.findOneAndUpdate(
+        {_id : req.params.userId},
+        {$set : userFields },
+        {new : true}
+      ).then( user => res.json(user))
+      .catch(err => console.log(err));
+    }
+    else{
+      res.status(404).json("user Not found");
+
+    }
+
+  })
+}
+exports.get_last_login = function(req,res){
+  const query = UserActivity.find();
+  const days_login = moment().add(-process.env.LOGIN_LIMIT,'days');
+  UserActivity.find({'date':{"$gte":days_login}}).sort({'date':-1})
+  .then(useractivities => {
+    if(useractivities)
+      res.json(useractivities);
+    else{
+      res.json("No user found");
+    }
+  })
+
+}

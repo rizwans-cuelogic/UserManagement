@@ -4,10 +4,10 @@ const isEmpty =require('./is-Empty.js');
 
 
 module.exports=function validateRegisterInput(data){
-  console.log("Dat....",data);
-  console.log(typeof(data.password));
+  console.log("Data....",data);
   
   let errors = {};
+
 
   data.userName = (data.userName)? data.userName : '';
   data.password = (data.password) ? data.password : '';

@@ -5,6 +5,8 @@ const passport = require('passport');
 const result = require('dotenv').config();
 // routers 
 const users = require('./routes/users');
+const backup = require('mongodb-backup');
+const restore = require('mongodb-restore');
 
 app = express();
 
@@ -21,6 +23,30 @@ mongoose
 
 app.use(passport.initialize());
 require('./config/passport')(passport);
+
+backup({
+  uri: process.env.mongoURI,
+  root: __dirname,
+  callback: function(err) {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log('finish');
+    }
+  }
+});
+
+restore({
+  uri: process.env.mongoURI,
+  root: __dirname+'/userManagement'
+});
+
+app.use((req,res,next)=>{ 
+  let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  console.log(req.headers);
+
+  next();
+})
 
 // app routers
 app.use('/api/users',users);
