@@ -3,6 +3,8 @@ const UserActivity = require('../model/UserActivity');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
+const boom = require('boom');
+
 
 const validateRegisterInput= require('../validator/register');
 const validateLoginInput = require('../validator/login');
@@ -17,7 +19,7 @@ exports.register= function (req, res){
     User.findOne({userName:req.body.userName})
       .then(user=>{ 
         if(user){
-          res.status(400).json({userName:"userName Already Existed"});
+          res.json(boom.badRequest('user already exists.'));
         }
         else{ 
             const newUser = new User({
@@ -42,7 +44,7 @@ exports.register= function (req, res){
 exports.login =  function (req,res){
   const { errors, isValid } = validateLoginInput(req.body);
   if (!isValid) {
-    res.status(404).json({ errors });
+    res.status(400).json(errors);
   }
 
   userName = req.body.userName;
@@ -50,7 +52,7 @@ exports.login =  function (req,res){
   User.findOne({userName})
     .then(user =>{
       if(!user){
-         res.status(404).json("User Not Found");
+         res.json(boom.notFound());
       }
       bcrypt.compare(password,user.password)
       .then(isMatch =>{
@@ -85,7 +87,7 @@ exports.login =  function (req,res){
             });
           }
           else{
-            res.status(404).json({error:"email and password is incorrect."});
+            res.json(boom.badData());
           }
       })
       .catch(err =>{
@@ -109,7 +111,7 @@ exports.get_user = function(req,res){
   User.findOne({_id:userId})
   .then(user =>{ 
       if(!user){
-        res.status(404).json("User Not found.....");
+        res.json(boom.notFound());
       }
       else{
         res.json(user);
@@ -141,7 +143,7 @@ exports.update_user = function(req,res){
       .catch(err => console.log(err));
     }
     else{
-      res.status(404).json("user Not found");
+      res.json(boom.notFound());
 
     }
 
@@ -155,7 +157,7 @@ exports.get_last_login = function(req,res){
     if(useractivities)
       res.json(useractivities);
     else{
-      res.json("No user found");
+      res.json(boom.notFound());
     }
   })
 

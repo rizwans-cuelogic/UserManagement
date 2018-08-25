@@ -12,6 +12,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
+    "boom": "^7.2.0",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "fix": "0.0.6",
@@ -23,6 +24,9 @@
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "pm2": "^3.0.3",
+    "pug": "^2.0.3",
+    "socket.io": "^2.1.1",
+    "socket.io-client": "^2.1.1",
     "validator": "^10.6.0"
   },
   "devDependencies": {

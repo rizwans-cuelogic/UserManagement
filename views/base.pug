@@ -1,0 +1,12 @@
+html
+    head
+        title= title
+        link(rel="stylesheet",href="css/index.css")
+    body
+        div.main#div1
+            h1= message
+        block content   
+        block footer
+            p= "this is footer"
+        block scripts
+            script(src="js/base.js")

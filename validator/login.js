@@ -1,5 +1,5 @@
 const validator = require("validator");
-const isEmpty =require('./is-Empty');
+const isEmpty = require('./is-Empty');
 module.exports = function validateLoginData(data) {
   let errors = {};
   data.userName = data.userName ? data.userName : "";
@@ -16,5 +16,3 @@ module.exports = function validateLoginData(data) {
     isValid: isEmpty(errors)
   }
 };
-
-

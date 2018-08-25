@@ -1,0 +1,20 @@
+extends base
+include mixinex.pug
+block content
+    div.form1
+        form(method="post" action="/")
+            label(for="userid") Username
+            input(type="text",
+                name="username",
+                id="userid",
+                placeholder="Username")
+            label(for="password") Password 
+            input(type="password",
+                name="password",
+                placeholder="Password")
+            input(type="submit",name="Reigister",id="sb1")
+    div.element-css
+        +elementlist(elements)
+block prepend scripts
+    script(src="js/socket.io-client.min.js")
+    script(src="js/index.js")
