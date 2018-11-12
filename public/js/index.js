@@ -1,13 +1,15 @@
-var socket = io("http://localhost:3000");
+var socket = io("http://localhost:4000");
 
+
+console.log(socket);
 socket.on("disconnect", function() {
-	alert("Disconnected");
+	console.log("Disconnected");
 });
 
 socket.on("connect", function() {
-	alert("Connected to socket");
+	console.log("Connected to socket");
 });
 
 socket.on("message", function(message) {
-	alert(message);
+	console.log(message);
 });
