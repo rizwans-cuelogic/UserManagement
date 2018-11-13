@@ -4,18 +4,18 @@ const Schema = mongoose.Schema;
 
 const ChatSchema = new Schema({
   title: {
-    type: string,
+    type: String,
     required: true
   },
   createdBy: {
-    type: string,
+    type: String,
     required: true
   },
   chatWith: {
-    type: string
+    type: String
   },
   isAccept: {
-    type: boolean
+    type: Boolean
   }
 });
 module.exports = Chat = mongoose.model("chats", ChatSchema);

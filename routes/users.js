@@ -61,4 +61,16 @@ router.post(
   chat_Controller.insertChat
 );
 
+router.post("/message", passport.authenticate("jwt", {
+  session: false
+}), chat_Controller.insertMessage);
+
+router.get("/chats", passport.authenticate("jwt", {
+  session: false
+}), chat_Controller.getChat);
+
+router.get("/messages", passport.authenticate("jwt", {
+  session: false
+}), chat_Controller.getMessages);
+
 module.exports = router;

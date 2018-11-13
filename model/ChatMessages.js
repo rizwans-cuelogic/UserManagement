@@ -12,11 +12,11 @@ const ChatMessageSchema = new Schema({
     ref: "users"
   },
   message: {
-    type: string
+    type: String
   },
   timestamp: {
     type: Date,
     default: Date.now
   }
 });
-module.exports = Chat = mongoose.model("chats", ChatSchema);
+module.exports = Chat = mongoose.model("chatMessage", ChatMessageSchema);

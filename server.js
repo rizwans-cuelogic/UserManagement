@@ -73,9 +73,9 @@ app.get("/", (req, res) => {
 });
 app.use("/", users);
 
-io.on("connection", function(socket) {
+io.on("connection", function (socket) {
   console.log("connected");
-  socket.on("disconnect", function() {
+  socket.on("disconnect", function () {
     console.log("user disconnected");
   });
   socket.emit("message", "Welcome to UserManagement");
