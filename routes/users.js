@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const user_Controller = require("../controller/userController");
+const chat_Controller = require("../controller/chatController");
+
 const passport = require("passport");
 
 router.get("/test", (req, res) =>
@@ -49,6 +51,14 @@ router.put(
     session: false
   }),
   user_Controller.update_user
+);
+
+router.post(
+  "/chat",
+  passport.authenticate("jwt", {
+    session: false
+  }),
+  chat_Controller.insertChat
 );
 
 module.exports = router;
