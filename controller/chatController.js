@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const moment = require("moment");
 const boom = require("boom");
 
-exports.insertChat = function (req, res) {
+exports.insertChat = function(req, res) {
   Chat.findOne({
     title: req.body.title
   }).then(chat => {
@@ -24,7 +24,7 @@ exports.insertChat = function (req, res) {
   });
 };
 
-exports.acceptChat = function (req, res) {
+exports.acceptChat = function(req, res) {
   Chat.find({
     chatWith: req.user.id,
     isAccept: false
@@ -45,7 +45,7 @@ exports.acceptChat = function (req, res) {
   });
 };
 
-exports.insertMessage = function (req, res) {
+exports.insertMessage = function(req, res) {
   let message = new Message({
     sender: req.body.sender,
     chat: req.body.chat,
@@ -55,25 +55,27 @@ exports.insertMessage = function (req, res) {
   message.save().then(chat => {
     res.status(200).json("message saved successfully");
   });
-}
+};
 
-exports.getChat = function (req, res) {
+exports.getChat = function(req, res) {
   Chat.find({
-      $or: [{
+    $or: [
+      {
         createdBy: req.user.id
-      }, {
+      },
+      {
         chatWith: req.user.id
-      }]
-    })
-    .then(chats => {
-      res.status(200).json(chats);
-    })
-}
+      }
+    ]
+  }).then(chats => {
+    res.status(200).json(chats);
+  });
+};
 
-exports.getMessages = function (req, res) {
+exports.getMessages = function(req, res) {
   Message.find({
     sender: req.user.id
   }).then(messages => {
     res.status(200).json(messages);
-  })
-}
+  });
+};

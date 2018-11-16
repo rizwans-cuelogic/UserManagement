@@ -28,7 +28,8 @@
     "pug": "^2.0.3",
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1",
-    "validator": "^10.6.0"
+    "validator": "^10.6.0",
+    "zoom": "0.0.2"
   },
   "devDependencies": {
     "nodemon": "^1.18.3"
